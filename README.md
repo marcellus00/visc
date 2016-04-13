@@ -29,13 +29,16 @@ namespace Platformer
 
 		protected override void OnStart(float startTime)
 		{
-			if(_turnOffTargetingAtStart) GameManager.CameraController.SetTarget(null);
-			else if (_targetActorInstedOfPlayerAtStart) GameManager.CameraController.SetTarget(_actor.transform);
+			if(_turnOffTargetingAtStart)
+            	GameManager.CameraController.SetTarget(null);
+			else if (_targetActorInstedOfPlayerAtStart) 
+            	GameManager.CameraController.SetTarget(_actor.transform);
 		}
 
 		protected override void OnStop()
 		{
-			if(_turnOnTargetingAtEnd || _targetPlayerInTheEnd) GameManager.CameraController.SetTarget(GameManager.PlayerController.transform);
+			if(_turnOnTargetingAtEnd || _targetPlayerInTheEnd)
+            	GameManager.CameraController.SetTarget(GameManager.PlayerController.transform);
 		}
 
 
