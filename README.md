@@ -15,7 +15,8 @@ Created for use in Unity 5.
 
 Here's the example of custom event action from another project, that controls behaviour of camera:
 
-```#if UNITY_EDITOR
+```
+#if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
