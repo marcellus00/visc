@@ -48,18 +48,7 @@ namespace Visc
 		{
 			_myControlId = GetWindow(typeof(ScenarioEditorWindow), false, "Scenario Editor Window").GetInstanceID();
 		}
-
-		public static Texture2D MakeTex(int width, int height, Color col)
-		{
-			var pix = new Color[width * height];
-			for (var i = 0; i < pix.Length; ++i)
-				pix[i] = col;
-			var result = new Texture2D(width, height);
-			result.SetPixels(pix);
-			result.Apply();
-			return result;
-		}
-
+		
 		private float _visibleDuration;
 
 		private void OnGUI()
@@ -255,7 +244,7 @@ namespace Visc
 			{
 				var trackStyle = new GUIStyle(GUI.skin.box)
 				{
-					normal = { background = ScenarioEditorWindow.MakeTex(2, 2, new Color(0f, 0f, 0f, 0.1f)) },
+					normal = { background = EventAction.MakeTex(2, 2, new Color(0f, 0f, 0f, 0.1f)) },
 					name = "Track Style"
 				};
 				GUI.Box (new Rect (0, offset + BoxHeight * i, position.width, BoxHeight + 1), string.Empty, trackStyle);
