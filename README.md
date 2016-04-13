@@ -13,7 +13,7 @@ Extend the class "EventAction", override methods OnEditorGui, OnStart, OnUpdate,
 
 Created for use in Unity 5.
 
-Here's the example of custom event action from another project, that controls behaviour of camera:
+Here's the example of custom event action from another project, that controls the behaviour of a camera:
 
 ```
 #if UNITY_EDITOR
