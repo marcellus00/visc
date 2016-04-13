@@ -1,7 +1,7 @@
 # visc
 Extendable visual scenario editor for Unity
 
-visc is an easy and customisable tool for creation of time-based rich and action packed scenarios for your Unity game, allowing you to control and modify events, actions and actors.
+visc is an easy and customisable tool for creation of time-based, rich and action packed scenarios for your Unity game, allowing you to control and modify events, actions and actors. Created for use in Unity 5.
 
 ![timeline](https://github.com/marcellus00/visc/blob/master/screenshots/timeline.png?raw=true)
 
@@ -10,10 +10,7 @@ Basically it's a timeline editor with custom actions. Current version contains b
 ![editor](https://github.com/marcellus00/visc/blob/master/screenshots/eventactioneditor.png?raw=true)
 
 Extend the class "EventAction", override methods OnEditorGui, OnStart, OnUpdate, OnStop and you're good to go!
-
-Created for use in Unity 5.
-
-Here's the example of custom event action from another project, that controls behaviour of camera:
+Here's the example of custom event action from another project, that controls the behaviour of a camera:
 
 ```
 #if UNITY_EDITOR
@@ -32,13 +29,16 @@ namespace Platformer
 
 		protected override void OnStart(float startTime)
 		{
-			if(_turnOffTargetingAtStart) GameManager.CameraController.SetTarget(null);
-			else if (_targetActorInstedOfPlayerAtStart) GameManager.CameraController.SetTarget(_actor.transform);
+			if(_turnOffTargetingAtStart)
+            	GameManager.CameraController.SetTarget(null);
+			else if (_targetActorInstedOfPlayerAtStart) 
+            	GameManager.CameraController.SetTarget(_actor.transform);
 		}
 
 		protected override void OnStop()
 		{
-			if(_turnOnTargetingAtEnd || _targetPlayerInTheEnd) GameManager.CameraController.SetTarget(GameManager.PlayerController.transform);
+			if(_turnOnTargetingAtEnd || _targetPlayerInTheEnd)
+            	GameManager.CameraController.SetTarget(GameManager.PlayerController.transform);
 		}
 
 
@@ -63,4 +63,4 @@ namespace Platformer
 ```
 
 # Known issues
-Scriptable objects (whic every EventAction is) is stored by Unity as a separate entity and right now there's no protection from unexpected issues like this one: if you create a copy of your Scenario object - both of them will share the same references to actions, so editing action in one scenario will affect another.
+Scriptable objects (which every EventAction is) is stored by Unity as a separate entities and right now there's no protection from unexpected issues like this one: if you create a copy of your Scenario object - both of them will share the same references to actions, so editing action in one scenario will affect another.
