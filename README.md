@@ -12,3 +12,54 @@ Basically it's a timeline editor with custom actions. Current version contains b
 Extend the class "EventAction", override methods OnEditorGui, OnStart, OnUpdate, OnStop and you're good to go!
 
 Created for use in Unity 5.
+
+Here's the example of custom event action from another project, that controls behaviour of camera:
+
+```#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using UnityEngine;
+
+namespace Platformer
+{
+	public class CameraTargetControl : EventAction
+	{
+		[SerializeField] private bool _turnOffTargetingAtStart;
+		[SerializeField] private bool _turnOnTargetingAtEnd;
+		[SerializeField] private bool _targetActorInstedOfPlayerAtStart;
+		[SerializeField] private bool _targetPlayerInTheEnd;
+
+		protected override void OnStart(float startTime)
+		{
+			if(_turnOffTargetingAtStart) GameManager.CameraController.SetTarget(null);
+			else if (_targetActorInstedOfPlayerAtStart) GameManager.CameraController.SetTarget(_actor.transform);
+		}
+
+		protected override void OnStop()
+		{
+			if(_turnOnTargetingAtEnd || _targetPlayerInTheEnd) GameManager.CameraController.SetTarget(GameManager.PlayerController.transform);
+		}
+
+
+#if UNITY_EDITOR
+		protected override void OnEditorGui()
+		{
+			_turnOffTargetingAtStart = EditorGUILayout.Toggle("Camera targeting off", _turnOffTargetingAtStart);
+
+			if (_turnOffTargetingAtStart)
+				_turnOnTargetingAtEnd = EditorGUILayout.Toggle("Targeting on in the end", _turnOnTargetingAtEnd);
+			else
+			{
+				_turnOnTargetingAtEnd = false;
+				_targetActorInstedOfPlayerAtStart = EditorGUILayout.Toggle("Target actor", _targetActorInstedOfPlayerAtStart);
+				if (_targetActorInstedOfPlayerAtStart)
+					_targetPlayerInTheEnd = EditorGUILayout.Toggle("Target player in the end", _targetPlayerInTheEnd);
+			}
+		}
+#endif
+	}
+}
+```
+
+# Known issues
+Scriptable objects (whic every EventAction is) is stored by Unity as a separate entity and right now there's no protection from unexpected issues like this one: if you create a copy of your Scenario object - both of them will share the same references to actions, so editing action in one scenario will affect another.
