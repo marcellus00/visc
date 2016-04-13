@@ -1,6 +1,9 @@
 # visc
 Extendable visual scenario editor for Unity
 
+
+Created for use in Unity 5.
+
 visc is an easy and customisable tool for creation of time-based rich and action packed scenarios for your Unity game, allowing you to control and modify events, actions and actors.
 
 ![timeline](https://github.com/marcellus00/visc/blob/master/screenshots/timeline.png?raw=true)
@@ -10,9 +13,6 @@ Basically it's a timeline editor with custom actions. Current version contains b
 ![editor](https://github.com/marcellus00/visc/blob/master/screenshots/eventactioneditor.png?raw=true)
 
 Extend the class "EventAction", override methods OnEditorGui, OnStart, OnUpdate, OnStop and you're good to go!
-
-Created for use in Unity 5.
-
 Here's the example of custom event action from another project, that controls the behaviour of a camera:
 
 ```
