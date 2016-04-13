@@ -47,7 +47,7 @@ namespace Visc
 			{
 				GuiStyle = new GUIStyle(GUI.skin.box)
 				{
-					normal = { background = ScenarioEditorWindow.MakeTex(2, 2, new Color(0.5f, 0.5f, 1f, 0.5f)) },
+					normal = { background = MakeTex(2, 2, new Color(0.5f, 0.5f, 1f, 0.5f)) },
 					name = ToString()
 				};
 			}
