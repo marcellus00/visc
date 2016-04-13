@@ -1,7 +1,6 @@
 # visc
 Extendable visual scenario editor for Unity
 
-
 Created for use in Unity 5.
 
 visc is an easy and customisable tool for creation of time-based rich and action packed scenarios for your Unity game, allowing you to control and modify events, actions and actors.
