@@ -9,7 +9,7 @@ using AnimatorControllerParameterType = UnityEngine.AnimatorControllerParameterT
 
 namespace Visc
 {
-	public class CharacterAnimEvent : EventAction
+	public class CustomAnimEvent : EventAction
 	{
 		[SerializeField] private string _triggerOnStart;
 		[SerializeField] private string _triggerAtEnd;
