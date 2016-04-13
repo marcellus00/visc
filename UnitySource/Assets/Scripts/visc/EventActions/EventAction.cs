@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Visc
 {
-	public class EventAction : ScriptableObject
+	public abstract class EventAction : ScriptableObject
 	{
 		public const string ActionName = "Generic event action";
 
