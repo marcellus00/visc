@@ -60,4 +60,4 @@ namespace Platformer
 ```
 
 # Known issues
-Scriptable objects (whic every EventAction is) is stored by Unity as a separate entity and right now there's no protection from unexpected issues like this one: if you create a copy of your Scenario object - both of them will share the same references to actions, so editing action in one scenario will affect another.
+Scriptable objects (which every EventAction is) is stored by Unity as a separate entity and right now there's no protection from unexpected issues like this one: if you create a copy of your Scenario object - both of them will share the same references to actions, so editing action in one scenario will affect another.
