@@ -9,7 +9,7 @@ namespace Visc
 		public override void OnInspectorGUI()
 		{
 			if (GUILayout.Button("Open scenario editor"))
-				ScenarioEditorWindow.ShowWindow();
+				ScenarioEditorWindow.ShowWindow().SetScenario(target as Scenario);
 		}
 	}
 }

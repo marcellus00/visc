@@ -44,9 +44,16 @@ namespace Visc
 		private EventActionEditor _eventActionEditor;
 
 		[MenuItem("Window/Scenario editor %#L")]
-		public static void ShowWindow()
+		public static ScenarioEditorWindow ShowWindow()
 		{
-			_myControlId = GetWindow(typeof(ScenarioEditorWindow), false, "Scenario Editor Window").GetInstanceID();
+			var window = GetWindow(typeof (ScenarioEditorWindow), false, "Scenario Editor Window") as ScenarioEditorWindow;
+            _myControlId = window.GetInstanceID();
+			return window;
+		}
+
+		public void SetScenario(Scenario scenario)
+		{
+			CurrentScenario = scenario;
 		}
 		
 		private float _visibleDuration;
