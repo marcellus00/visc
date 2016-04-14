@@ -100,10 +100,9 @@ namespace Visc
 
 				if (_draggedAction == null)
 				{
-					var newVisibleDuration = CurrentScenario.MaximumDuration/CurrentScenario.VisibleScale;
-					var newScale = newVisibleDuration*CurrentScenario.VisibleScale/_visibleDuration;
-					_visibleDuration = newVisibleDuration;
-					CurrentScenario.VisibleScale = newScale;
+					var newVisibleDuration = CurrentScenario.MaximumDuration / CurrentScenario.VisibleScale;
+					if (Math.Abs(_visibleDuration - newVisibleDuration) > 0)
+						_visibleDuration = newVisibleDuration;
 				}
 
 				GUILayout.EndHorizontal();
