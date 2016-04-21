@@ -84,9 +84,12 @@ namespace Visc
 
 				GUILayout.BeginHorizontal();
 
-				if(Application.isPlaying)
-					if(GUILayout.Button("PLAY"))
-						_currentScenario.Execute();
+				if (Application.isPlaying)
+					if (!_currentScenario.InProgress)
+					{
+						if (GUILayout.Button("PLAY")) _currentScenario.Execute();
+					}
+					else if (GUILayout.Button("STOP")) _currentScenario.Stop();
 
 				GUILayout.BeginHorizontal();
 				CurrentScenario.VisibleScale = EditorGUILayout.Slider("Scale", CurrentScenario.VisibleScale, 0.1f, 100f);
