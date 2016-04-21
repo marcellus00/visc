@@ -29,9 +29,8 @@ namespace Visc
 		private bool _startHandleDragged;
 		private bool _batchSelect;
 		
-		private TempActionValues _draggedActionTempValues;
-		private readonly Dictionary<EventAction, TempActionValues> _selectedActionsTempValues =
-			new Dictionary<EventAction, TempActionValues>();
+		private readonly Dictionary<int, TempActionValues> _playTimeChanges =
+			new Dictionary<int, TempActionValues>();
 
 		private Type[] _eventActionTypes;
 
@@ -105,9 +104,32 @@ namespace Visc
 				CurrentScenario.PlayOnce = EditorGUILayout.Toggle("Play once", CurrentScenario.PlayOnce);
 				GUILayout.EndHorizontal();
 
-				if (GUILayout.Button("Save"))
-					EditorSceneManager.MarkAllScenesDirty();
+				GUILayout.EndHorizontal();
 
+				GUILayout.BeginHorizontal(GUILayout.Width(500f));
+				if(_playTimeChanges.Any())
+					if (Application.isPlaying)
+					{
+						GUILayout.Label("UNCOMMITED CHANGES! Stop to save");
+						if (GUILayout.Button("Stop without saving"))
+						{
+							_playTimeChanges.Clear();
+							EditorApplication.isPlaying = false;
+						}
+					}
+					else
+					{
+						foreach (var edit in _playTimeChanges)
+						{
+							var action = EditorUtility.InstanceIDToObject(edit.Key) as EventAction;
+							if(action == null) continue;
+							action.StartTime = edit.Value.StartTime;
+							action.Duration = edit.Value.Duration;
+							action.EditingTrack = edit.Value.EditingTrack;
+						}
+
+						_playTimeChanges.Clear();
+					}
 				GUILayout.EndHorizontal();
 
 				var lastRect = GUILayoutUtility.GetLastRect();
@@ -157,8 +179,15 @@ namespace Visc
 			}
 			else
 			{
-				_eventActionTypes = null;
-				GUILayout.Label("Select scenario");
+				if (Selection.gameObjects.Length == 1)
+				{
+					OnSelectionChange();
+				}
+				else
+				{
+					_eventActionTypes = null;
+					GUILayout.Label("Select scenario");
+				}
 			}
 		}
 
@@ -166,16 +195,28 @@ namespace Visc
 		{
 			if (_draggedAction != null && GUIUtility.hotControl == _myControlId && Event.current.rawType == EventType.MouseUp)
 			{
-				if (CurrentScenario.Actions.Any (action => _draggedAction.CheckIntersection (action)))
+				if (Application.isPlaying)
 				{
-					_draggedAction.StartTime = _draggedActionTempValues.StartTime;
-					_draggedAction.Duration = _draggedActionTempValues.Duration;
-					_draggedAction.EditingTrack = _draggedActionTempValues.EditingTrack;
+					var newVals = new TempActionValues
+					{
+						StartTime = _draggedAction.StartTime,
+						Duration = _draggedAction.Duration,
+						EditingTrack = _draggedAction.EditingTrack
+					};
+
+					var id = _draggedAction.GetInstanceID();
+
+					if (_playTimeChanges.ContainsKey(id))
+						_playTimeChanges[id] = newVals;
+					else
+						_playTimeChanges.Add(id, newVals);
+
+					Repaint();
 				}
-				if(!Application.isPlaying)
+				else
 					EditorSceneManager.MarkAllScenesDirty();
-                _draggedAction = null;
-				//Event.current.Use ();
+
+				_draggedAction = null;
 			}
 
 			if (_draggedAction != null)
@@ -252,7 +293,7 @@ namespace Visc
 				
 
 			foreach (var action in actions)
-			{			
+			{
 				if(action.EditingTrack < _trackOffset || action.EditingTrack >= _trackOffset + maxVisibleTracks) continue;
 				var horizontalPosStart = position.width * (action.StartTime / duration) - hOffset;
 				var horizontalPosEnd = position.width * (action.EndTime / duration) - hOffset;
@@ -290,9 +331,6 @@ namespace Visc
 							_startHandleDragged = startHandle;
 							GUIUtility.hotControl = _myControlId;
 
-							_draggedActionTempValues.StartTime = action.StartTime;
-							_draggedActionTempValues.Duration = action.Duration;
-							_draggedActionTempValues.EditingTrack = action.EditingTrack;
 							break;
 						case 2:
 							_eventActionEditor = GetWindow (typeof(EventActionEditor), true, "Action editor") as EventActionEditor;
