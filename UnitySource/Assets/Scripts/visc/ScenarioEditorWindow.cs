@@ -43,9 +43,16 @@ namespace Visc
 		private EventActionEditor _eventActionEditor;
 
 		[MenuItem("Window/Scenario editor %#L")]
-		public static void ShowWindow()
+		public static ScenarioEditorWindow ShowWindow()
 		{
-			_myControlId = GetWindow(typeof(ScenarioEditorWindow), false, "Scenario Editor Window").GetInstanceID();
+			var window = GetWindow(typeof (ScenarioEditorWindow), false, "Scenario Editor Window") as ScenarioEditorWindow;
+            _myControlId = window.GetInstanceID();
+			return window;
+		}
+
+		public void SetScenario(Scenario scenario)
+		{
+			CurrentScenario = scenario;
 		}
 		
 		private float _visibleDuration;
@@ -92,10 +99,9 @@ namespace Visc
 
 				if (_draggedAction == null)
 				{
-					var newVisibleDuration = CurrentScenario.MaximumDuration/CurrentScenario.VisibleScale;
-					var newScale = newVisibleDuration*CurrentScenario.VisibleScale/_visibleDuration;
-					_visibleDuration = newVisibleDuration;
-					CurrentScenario.VisibleScale = newScale;
+					var newVisibleDuration = CurrentScenario.MaximumDuration / CurrentScenario.VisibleScale;
+					if (Math.Abs(_visibleDuration - newVisibleDuration) > 0)
+						_visibleDuration = newVisibleDuration;
 				}
 
 				GUILayout.EndHorizontal();
