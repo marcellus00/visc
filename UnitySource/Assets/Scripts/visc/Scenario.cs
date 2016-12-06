@@ -138,9 +138,9 @@ namespace Visc
 				if(_time >= totalDuration)
 					isPlaying = false;
 				
-				_time += Time.deltaTime;
+				_time += Time.fixedDeltaTime;
 
-				yield return null;
+				yield return new WaitForFixedUpdate();
 			}
 
 			foreach (var eventAction in _actions.Where(eventAction => eventAction.NowPlaying))
